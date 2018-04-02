@@ -1,0 +1,10 @@
+
+<!-- 跳转到学校专业招生详情 -->
+var resultTable = $(".ch-table");
+var resultHref = resultTable.find("a:contains('查看')");
+resultHref.each(function(){
+	var schoolHrefContext = "http://yz.chsi.com.cn/" + $(this).attr("href");
+	console.log(schoolHrefContext);
+	console.log($(this).html());
+	$(this)[0].click();
+	});

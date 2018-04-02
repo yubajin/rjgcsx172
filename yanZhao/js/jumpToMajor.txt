@@ -1,0 +1,14 @@
+
+<!-- 获取专业列表的url -->
+var resultForms = $("form[method=post]:gt(1)");
+resultForms.each(function(){
+	var schoolHref = $(this).find("a");
+	var schoolHrefContext = "http://yz.chsi.com.cn/" + schoolHref.attr("href");
+	console.log(schoolHrefContext);
+
+	window.opener=null;
+    window.open('','_self');
+    window.close();
+
+	schoolHref[0].click();
+
