@@ -18,7 +18,7 @@ class SpiderSchool:
     client = pymongo.MongoClient(MONGO_URL)
     db = client[MONGO_DB]
 
-    def index_page(self,schoolCode,string3,db):
+    def index_page(self,schoolCode):
         """
         抓取索引页
         """
@@ -29,6 +29,10 @@ class SpiderSchool:
             filename_part1 = 'js/jumpToSchool_part1.txt'
             file_part1 = open(filename_part1, 'rb')
             string1 = file_part1.read().decode('utf-8')
+
+            filename_part2 = 'js/jumpToSchool_part2.txt'
+            file_part2 = open(filename_part2, 'rb')
+            string3 = file_part2.read().decode('utf-8')
 
             string = string1 + schoolCode + string3
 
@@ -73,47 +77,30 @@ class SpiderSchool:
                     '_211': _211
                 }
                 print(school)
-                self.save_to_mongo(school,db)
+                self.save_to_mongo(school)
 
         except TimeoutException:
             print("爬取院校失败")
 
-    def save_to_mongo(self,result,db):
+    def save_to_mongo(self,result):
             """
             保存至MongoDB
             :param result: 结果
             """
             try:
-                if SpiderSchool.db[db].insert(result):
+                if SpiderSchool.db[SCHOOLS_COLLECTION].insert(result):
                     print('存储到MongoDB成功')
             except Exception:
                 print('存储到MongoDB失败')
 
 
-    def main(self,mldm):
+    def main(self):
 
         request_Spider = Request_Spider()
         filename = 'js/shengfen.txt'
         lines = request_Spider.spider_reader(filename)
-
-        string3 = ''
-        db = ''
-        # 爬取学硕信息
-        if(mldm == 0):
-            filename_part2 = 'js/jumpToSchool_part2.txt'
-            file_part2 = open(filename_part2, 'rb')
-            string3 = file_part2.read().decode('utf-8')
-            db = 'schools'
-
-        # 爬取专硕信息
-        if (mldm != 0):
-            filename_part2 = 'js/jumpToSchool_part2_professional.txt'
-            file_part2 = open(filename_part2, 'rb')
-            string3 = file_part2.read().decode('utf-8')
-            db = 'schools_professional'
-
         for line in lines:
-            self.index_page(line,string3,db)
+            self.index_page(line)
 
         # shengfencode = '46'
         # self.index_page(shengfencode)
@@ -124,6 +111,4 @@ class SpiderSchool:
 
 if __name__ == '__main__':
     spiderSchool = SpiderSchool()
-    # spiderSchool.main(0)# 爬取学硕信息
-
-    spiderSchool.main(1)# 爬取专硕信息
+    spiderSchool.main()

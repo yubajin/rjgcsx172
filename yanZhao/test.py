@@ -47,4 +47,20 @@ def get_products():
 
 
 if __name__ == '__main__':
-    index_page()
+    # index_page()
+    #
+    # zsml_result_item = BeautifulSoup(str(zsml_result), 'html.parser').find('tbody')
+    # zsml_result_item_tds = BeautifulSoup(str(zsml_result_item), 'html.parser').find_all('td')
+    #
+    # example_scope = ''
+    # for zsml_result_item_td in zsml_result_item_tds:
+    #     example_scope += zsml_result_item_td.get_text() + ','
+
+    td_item = '<td>(101)思想政治理论<span class="sub-msg">见招生简章</span></td>'
+    td = BeautifulSoup(td_item,'html.parser').find('td')
+    td_later = td.get_text()
+    print(td)
+    print(td_later.replace('\n','').replace(' ','').replace('见招生简章',''))
+    pass
+
+
